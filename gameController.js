@@ -4,6 +4,10 @@ let curPlayer;
 let curHeldPiece;
 let curHeldPieceStartingPosition;
 
+// Rook = Minotaur
+// Knight = Dragon
+// General = Bishop
+
 function startGame() {
     const starterPosition = [['R', 'N', 'B', 'Q', 'K', 'B', 'N', 'R'],
     ['P', 'P', 'P', 'P', 'P', 'P', 'P', 'P'],
@@ -178,7 +182,9 @@ function validateMovement(startingPosition, endingPosition) {
 
 function validateBishopMovement(startingPosition, endingPosition) {
     if (endingPosition[0] - endingPosition[1] == startingPosition[0] - startingPosition[1] ||
-        endingPosition[0] + endingPosition[1] == startingPosition[0] + startingPosition[1]) {
+        endingPosition[0] + endingPosition[1] == startingPosition[0] + startingPosition[1] ||
+       (([-2, 2].includes(endingPosition[0] - startingPosition[0]) && [-1, 1].includes(endingPosition[1] - startingPosition[1])) || 
+        ([-2, 2].includes(endingPosition[1] - startingPosition[1]) && [-1, 1].includes(endingPosition[0] - startingPosition[0])))) {
             if (!validatePathIsBlocked(startingPosition, endingPosition)) {
                 return false;
             }
@@ -190,7 +196,9 @@ function validateBishopMovement(startingPosition, endingPosition) {
 }
 
 function validateRookMovement(startingPosition, endingPosition) {
-    if (endingPosition[0] == startingPosition[0] || endingPosition[1] == startingPosition[1]) {
+    if (endingPosition[0] == startingPosition[0] || endingPosition[1] == startingPosition[1] || 
+        (((endingPosition[0] - startingPosition[0] == 1) || (endingPosition[0] - startingPosition[0] == -1)) && 
+        ((endingPosition[1] - startingPosition[1] == 1) || (endingPosition[1] - startingPosition[1] == -1)))) {
         if (!validatePathIsBlocked(startingPosition, endingPosition)) {
             return false;
         }
@@ -265,7 +273,9 @@ function validatePawnMovement(pawnColor, startingPosition, endingPosition) {
 
 function validateKnightMovement(startingPosition, endingPosition) {
     if (([-2, 2].includes(endingPosition[0] - startingPosition[0]) && [-1, 1].includes(endingPosition[1] - startingPosition[1])) || 
-        ([-2, 2].includes(endingPosition[1] - startingPosition[1]) && [-1, 1].includes(endingPosition[0] - startingPosition[0]))) {
+        ([-2, 2].includes(endingPosition[1] - startingPosition[1]) && [-1, 1].includes(endingPosition[0] - startingPosition[0])) ||
+        ((endingPosition[0] - startingPosition[0] == 2) || (endingPosition[0] - startingPosition[0] == -2)) ||
+        ((endingPosition[1] - startingPosition[1] == 2) || (endingPosition[1] - startingPosition[1] == -2))) {
             if (isFriendlyPieceOnEndingPosition(endingPosition)) {
                 return false;
             }
